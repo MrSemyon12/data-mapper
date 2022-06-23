@@ -16,60 +16,75 @@ class DataMapper
             'user123',
             'PASSWORD'
         );
-        $this->pdo->exec("CREATE TABLE IF NOT EXISTS films(id INT AUTO_INCREMENT, title VARCHAR(255), category VARCHAR(255), PRIMARY KEY(id))");
+        $this->pdo->exec('CREATE TABLE IF NOT EXISTS films(id INT AUTO_INCREMENT, title VARCHAR(255), category VARCHAR(255), PRIMARY KEY(id))');
     }
 
-    public function getAll()
+    public function getAll(): array
     {
-        $query = "SELECT * FROM films";
+        $query = 'SELECT * FROM films';
         $tmp = $this->pdo->prepare($query);
         $tmp->execute();
-        return $this->pdo->query($query);
+        $data = $tmp->fetchAll();
+        $objects = array();
+        foreach ($data as $row){
+            $objects[] = new Film($row['id'], $row['title'], $row['category']);
+        }
+        return $objects;
     }
 
-    public function getById($id)
+    public function getById($id): array
     {
-        $query = "SELECT * FROM films WHERE id = $id";
+        $query = 'SELECT * FROM films WHERE id = :id';
         $tmp = $this->pdo->prepare($query);
-        $tmp->execute();
-        if ($tmp->fetchAll()){
-            return $this->pdo->query($query);
+        $tmp->execute(['id' => $id]);
+        $data = $tmp->fetchAll();
+        $objects = array();
+        if (!empty($data)) {
+            foreach ($data as $row) {
+                $objects[] = new Film($row['id'], $row['title'], $row['category']);
+            }
         }
         else {
-            echo '<br><label>Запись не найдена!</label>';
+            echo 'Запись не найдена!';
         }
+        return $objects;
     }
 
-    public function getByField($field)
+    public function getByField($field): array
     {
-        $query = "SELECT * FROM films WHERE title = '$field' OR category = '$field'";
+        $query = 'SELECT * FROM films WHERE title = :field OR category = :field';
         $tmp = $this->pdo->prepare($query);
-        $tmp->execute();
-        if ($tmp->fetchAll()){
-            return $this->pdo->query($query);
+        $tmp->execute(['field' => $field]);
+        $data = $tmp->fetchAll();
+        $objects = array();
+        if (!empty($data)) {
+            foreach ($data as $row){
+                $objects[] = new Film($row['id'], $row['title'], $row['category']);
+            }
         }
         else {
-            echo '<br><label>Запись не найдена!</label>';
+            echo 'Запись не найдена!';
         }
+        return $objects;
     }
 
-    public function addRow($title, $category)
+    public function addRow($title, $category): void
     {
-        $query = "INSERT INTO films(title, category) VALUES('$title', '$category')";
+        $query = 'INSERT INTO films(title, category) VALUES(:title, :category)';
         $tmp = $this->pdo->prepare($query);
-        $tmp->execute();
-        echo '<br><label>Запись добавлена!</label>';
+        $tmp->execute(['title' => $title, 'category' => $category]);
+        echo 'Запись добавлена!';
     }
 
-    public function deleteById($id)
+    public function deleteById($id): void
     {
-        $query = "DELETE FROM films WHERE id = $id";
+        $query = 'DELETE FROM films WHERE id = :id';
         $tmp = $this->pdo->prepare($query);
-        $tmp->execute();
+        $tmp->execute(['id' => $id]);
         if ($tmp->rowCount() == 0) {
-            echo '<br><label>Запись не найдена!</label>';
+            echo 'Запись не найдена!';
         } else {
-            echo '<br><label>Запись удалена!</label>';
+            echo 'Запись удалена!';
         }
     }
 }

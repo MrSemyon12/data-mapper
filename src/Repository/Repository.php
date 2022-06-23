@@ -2,13 +2,10 @@
 
 namespace App\Repository;
 
-use App\Model\Film;
-use PDO;
-
 class Repository
 {
     private DataMapper $dataMapper;
-    private $arrayData;
+    private array $arrayData;
 
     public function __construct()
     {
@@ -16,27 +13,27 @@ class Repository
         $this->arrayData = $this->dataMapper->getAll();
     }
 
-    public function getAll()
+    public function getAll(): array
     {
         return $this->arrayData;
     }
 
-    public function getById($id)
+    public function getById($id): array
     {
         return $this->dataMapper->getById($id);
     }
 
-    public function getByField($field)
+    public function getByField($field): array
     {
         return $this->dataMapper->getByField($field);
     }
 
-    public function addRow($title, $category)
+    public function addRow($title, $category): void
     {
         $this->dataMapper->addRow($title, $category);
     }
 
-    public function deleteById($id)
+    public function deleteById($id): void
     {
         $this->dataMapper->deleteById($id);
     }

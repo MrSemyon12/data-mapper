@@ -13,32 +13,32 @@ class View
         $this->twig = $twig;
     }
 
-    public function __invokeHeader()
+    public function showHeader(): void
     {
         $this->twig->display('header.twig');
     }
 
-    public function __invokeTable($table)
+    public function showTable($table): void
     {
         $this->twig->display('table.twig', ['table' => $table]);
     }
 
-    public function __invokeGetById()
+    public function showGetById(): void
     {
         $this->twig->display('getById.twig');
     }
 
-    public function __invokeGetByField()
+    public function showGetByField(): void
     {
         $this->twig->display('getByField.twig');
     }
 
-    public function __invokeAddRow()
+    public function showAddRow(): void
     {
         $this->twig->display('addRow.twig');
     }
 
-    public function __invokeDeleteById()
+    public function showDeleteById(): void
     {
         $this->twig->display('deleteById.twig');
     }

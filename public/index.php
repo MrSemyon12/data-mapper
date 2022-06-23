@@ -3,8 +3,6 @@
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use App\Repository\Repository;
-use App\Repository\DataMapper;
-use App\Model\Film;
 use App\View\View;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
@@ -14,34 +12,34 @@ $twig = new Environment($loader);
 $view = new View($twig);
 $repository = new Repository();
 
-$view->__invokeHeader();
+$view->showHeader();
 
 if (isset($_GET['getAll'])) {
-    $view->__invokeTable($repository->getAll());
+    $view->showTable($repository->getAll());
 }
 
 if (isset($_GET['getById'])) {
-    $view->__invokeGetById();
+    $view->showGetById();
 }
 if (isset($_GET['getIdButton'])) {
     $id = $_GET['getId'];
     if ($id != null) {
-        $view->__invokeTable($repository->GetById($id));
+        $view->showTable($repository->GetById($id));
     }
 }
 
 if (isset($_GET['getByField'])) {
-    $view->__invokeGetByField();
+    $view->showGetByField();
 }
 if (isset($_GET['getFieldButton'])) {
     $field = $_GET['field'];
     if ($field != null) {
-        $view->__invokeTable($repository->getByField($field));
+        $view->showTable($repository->getByField($field));
     }
 }
 
 if (isset($_GET['addRow'])) {
-    $view->__invokeAddRow();
+    $view->showAddRow();
 }
 if (isset($_GET['addButton'])) {
     $title = $_GET['title'];
@@ -52,7 +50,7 @@ if (isset($_GET['addButton'])) {
 }
 
 if (isset($_GET['deleteById'])) {
-    $view->__invokeDeleteById();
+    $view->showDeleteById();
 }
 if (isset($_GET['deleteButton'])) {
     $id = $_GET['delId'];
